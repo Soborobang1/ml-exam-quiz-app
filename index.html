@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ML 기말고사 대비 문제풀이</title>
+  <meta name="description" content="세종대학교 머신러닝 기말고사 대비 문제풀이 앱 — 50문제, 카테고리별 학습, 오답노트">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ── App Header ─────────────────────────────────────────── -->
+<header id="app-header">
+  <div class="container">
+    <div id="app-title">🎓 ML 기말고사 <span>세종대 머신러닝 (010000)</span></div>
+    <nav class="header-nav">
+      <button data-screen="home" class="active-nav">🏠 홈</button>
+      <button data-screen="notes">📝 오답노트</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ── Home Screen ────────────────────────────────────────── -->
+<main>
+<div id="home-screen" class="screen active">
+  <div class="container">
+
+    <!-- Hero -->
+    <div class="home-hero">
+      <h2>머신러닝 기말고사 대비 문제풀이</h2>
+      <p>Lecture 02–19 강의자료 기반 50문제 · 서술형 · 빈칸채우기 · O/X · 코드문제</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-number" id="stat-total">0</div>
+        <div class="stat-label">누적 풀이</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-correct">0</div>
+        <div class="stat-label">정답</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-pct">—</div>
+        <div class="stat-label">정답률</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-notes">0</div>
+        <div class="stat-label">오답노트</div>
+      </div>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="section-title">카테고리 선택 (다중 선택 가능)</div>
+    <div id="category-grid"></div>
+
+    <!-- Type Filter -->
+    <div class="section-title" style="margin-top:18px">문제 유형 필터</div>
+    <div id="type-filter"></div>
+
+    <!-- Quiz Options -->
+    <div class="quiz-options">
+      <label for="q-count-select">문제 수:</label>
+      <select id="q-count-select">
+        <option value="5">5문제</option>
+        <option value="10" selected>10문제</option>
+        <option value="15">15문제</option>
+        <option value="20">20문제</option>
+        <option value="50">전체 풀기 (최대 50)</option>
+      </select>
+      <span class="available-count" id="available-count">선택 가능: 50문제</span>
+    </div>
+
+    <button class="btn-start" id="btn-start-quiz">🚀 문제 풀기 시작</button>
+
+    <!-- Category Accuracy -->
+    <div class="section-title" style="margin-top:28px">카테고리별 정답률</div>
+    <div id="cat-accuracy"><p style="font-size:.85rem;color:var(--text3)">아직 풀이 기록이 없습니다.</p></div>
+
+  </div>
+</div>
+
+<!-- ── Quiz Screen ────────────────────────────────────────── -->
+<div id="quiz-screen" class="screen">
+  <div class="container">
+
+    <!-- Progress -->
+    <div class="progress-header">
+      <span class="progress-info" id="progress-info">0 / 0 제출</span>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+      </div>
+      <span id="score-display">0 / 0 정답</span>
+      <button class="btn-end-session" id="btn-end-session">결과 보기</button>
+    </div>
+
+    <!-- Question Cards -->
+    <div id="quiz-container"></div>
+
+  </div>
+</div>
+
+<!-- ── Summary Screen ─────────────────────────────────────── -->
+<div id="summary-screen" class="screen">
+  <div class="container">
+    <div class="summary-box">
+      <h2>🎯 세션 결과</h2>
+      <div class="summary-score" id="summary-score">0 / 0</div>
+      <div class="summary-sub" id="summary-pct">정답률 0%</div>
+      <p style="margin-top:12px;font-size:.95rem;color:var(--text2)" id="summary-msg"></p>
+      <div class="summary-actions">
+        <button class="btn-secondary" id="btn-retry">🔄 같은 문제 다시 풀기</button>
+        <button class="btn-primary-full" id="btn-new-quiz">🏠 새 문제 시작</button>
+      </div>
+      <button class="btn-secondary" style="margin-top:10px;width:100%" id="btn-view-notes">📝 오답노트 보기</button>
+    </div>
+
+    <div class="wrong-list">
+      <div class="section-title">틀린 문제 목록</div>
+      <div id="summary-wrong-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Notes Screen ───────────────────────────────────────── -->
+<div id="notes-screen" class="screen">
+  <div class="container">
+    <div class="section-title" style="margin-top:8px">📝 오답노트</div>
+    <div class="notes-toolbar">
+      <select id="notes-cat-filter"></select>
+      <input id="notes-search" type="text" placeholder="노트 검색...">
+    </div>
+    <div id="notes-container"></div>
+  </div>
+</div>
+</main>
+
+<!-- Load questions first, then app logic -->
+<script src="questions.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
